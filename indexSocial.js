@@ -6,8 +6,8 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    //origin: 'https://goldengcoin.github.io', // Restringe los orígenes permitidos
-    origin: 'http://localhost:5173', // Restringe los orígenes permitidos
+    origin: 'https://goldengcoin.github.io', // Restringe los orígenes permitidos
+    //origin: 'http://localhost:5173', // Restringe los orígenes permitidos
   }));
   
 // Conexión a MongoDB
