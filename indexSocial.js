@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const axios = require('axios'); // Importa axios
 require("dotenv").config();
 const app = express();
 app.use(express.json());
