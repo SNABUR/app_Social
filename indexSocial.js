@@ -59,13 +59,33 @@ app.post('/users', async (req, res) => {
 app.get('/users/:walletAddress', async (req, res) => {
     const { walletAddress } = req.params;
     try {
+        // Busca el usuario en la base de datos
         const user = await User.findOne({ walletAddress });
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
-        res.json(user);
+
+        // Hacer una llamada a la API de Coinbase para obtener el balance del usuario
+        const coinbaseResponse = await axios.post('https://api.developer.coinbase.com/rpc/v1/base-sepolia/yCYGyekgTfIGKsj-ZM_MQnJmbufDhUMh', {
+            jsonrpc: "2.0",
+            id: 1,
+            method: "cdp_listBalances",
+            params: [{
+                address: walletAddress,
+                pageToken: "",
+                pageSize: 12
+            }]
+        }, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        // Devuelve el usuario y el balance de la API de Coinbase
+        res.json({ user, BaseBalances: coinbaseResponse.data });
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener el usuario' });
+        console.error("Error al obtener el usuario o balance:", error);
+        res.status(500).json({ message: 'Error al obtener el usuario o balance' });
     }
 });
 
