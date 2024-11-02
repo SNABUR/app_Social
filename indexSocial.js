@@ -42,28 +42,31 @@ const Comment = mongoose.model('Comment', commentSchema);
 
 //getting coinbase balance
 const getCoinbaseBalance = async (address) => {
+    console.log("dedntro de coinbase balnace")
     try {
-        const response = await axios.post('https://api.developer.coinbase.com/rpc/v1/base/yCYGyekgTfIGKsj-ZM_MQnJmbufDhUMh', {
+        const response = await axios.post(process.env.RPC_QUICKNODE, {
             jsonrpc: "2.0",
             id: 1,
-            method: "cdp_listBalances",
-            params: [{
-                address: address,
-                pageToken: "",
-                pageSize: 12
-            }]
+            method: "bb_getaddress",
+            params: [
+                address,
+                {
+                    page: 1,
+                    size: 1,
+                }
+            ]
         }, {
             headers: {
                 "Content-Type": "application/json"
             }
         });
-
-        return response.data; // Return the response data
+        return response.data.result.tokens; // Regresa los datos de la dirección
     } catch (error) {
-        console.error("Error fetching Coinbase balance:", error);
-        throw new Error('Error fetching Coinbase balance');
+        console.error("Error fetching address data from QuickNode:", error);
+        throw new Error('Error fetching address data');
     }
 };
+
 
 const verifySignature = async (nonce, signature, walletAddress) => {
 
