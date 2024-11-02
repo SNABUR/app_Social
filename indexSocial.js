@@ -8,7 +8,7 @@ const publicClient =require('./client');
 app.use(express.json());
 
 app.use(cors({
-    origin: ['https://ggeese.github.io', 'https://jettonfactory.github.io', 'https://ggeese.fun'] // Restringe los orígenes permitidos
+    origin: ['https://ggeese.github.io', 'https://ggeese.fun'] // Restringe los orígenes permitidos
     //origin: 'http://localhost:5173', // Restringe los orígenes permitidos
   }));
   
